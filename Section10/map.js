@@ -6,3 +6,4 @@ const caps = texts.map(function(t) {
 });
 // returns each array item with Upper Case
 console.log(caps);
+console;
