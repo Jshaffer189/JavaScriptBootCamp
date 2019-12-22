@@ -1,25 +1,16 @@
-// arr.every(var => Test) - test every element of an array and passes back a boolean if everything passes True
-// Simialr to && and
-// arr.some(var => Test) - test every element of an array and passes back a boolean if anything passes True
-// Simialr to || or
+// Sort() - turns an array of numbers to strings than sorts them based on the string, mutating the original array if not doing slice()
+const prices = [ 400.5, 3000, 99.99, 35.99, 12.0, 9500 ];
 
-const words = [ 'dog', 'dig', 'log', 'bag', 'wag' ];
+let money = prices.sort();
+console.log(money);
 
-// True
-words.every((word) => {
-	return word.length === 3;
-});
+// Sorts by comparing two integers at a time
+// Ascending order, based on returning
+const ASCENDINGSORT = prices.sort((a, b) => a - b);
+// Descending order
+const DESCENDINGSORT = prices.sort((a, b) => b - a);
 
-// False
-words.every((word) => word[0] === 'd');
-
-// True
-words.every((w) => {
-	let last_letter = w[w.length - 1];
-	return last_letter === 'g';
-});
-
-let books = [
+const BACKPACK = [
 	{
 		title: 'Good Omens',
 		authors: [ 'Terry Pratchett', 'Neil Gaiman' ],
@@ -70,7 +61,5 @@ let books = [
 	}
 ];
 
-// True
-let ALLGOODBOOKS = books.every((book) => book.rating > 3.5);
-// False
-let ANY2AUTHORS = books.every((book) => book.authors.length === 2);
+// sort by rating
+console.log(BACKPACK.sort((a, b) => a.rating - b.rating));
