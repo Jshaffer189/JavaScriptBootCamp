@@ -31,6 +31,7 @@ numbers.forEach(function(num, idx) {
 	console.log(idx, num);
 });
 
+export { books };
 //
 const books = [
 	{
