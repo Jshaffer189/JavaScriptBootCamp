@@ -43,3 +43,27 @@ console.log(...'abcdefghijklmnopqrstuvwxyz');
 
 // -- -- -- -- -- -- -- -- //
 // Spread in Object Literals
+
+const CANINE = {
+	family: 'Caninae',
+	furry: true,
+	legs: 3
+};
+
+// spreads the CANINE Key Value pairs in to DOG
+// properties are spread not object (not the const DOG)
+const DOG = {
+	...CANINE,
+	// family: 'Caninae',
+	// furry: true
+	isPet: true,
+	// legs is over written using newest prop (4)
+	legs: 4
+};
+
+console.log(DOG);
+
+const SPREADNUMBERS = { ...[ 4, 5, 6 ] };
+
+// {0: 4, 1: 5, 2: 6}
+console.log(SPREADNUMBERS);
