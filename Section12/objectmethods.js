@@ -14,3 +14,13 @@ const MATH = {
 		return x * y;
 	}
 };
+
+const auth = {
+	username: 'tommy boy',
+	login() {
+		console.log('logged you in!');
+	},
+	logout() {
+		console.log('Goodbye');
+	}
+};
