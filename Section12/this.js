@@ -23,8 +23,14 @@ const person = {
 	printBio() {
 		const FULLNAME = this.fullName();
 		console.log(`${FULLNAME} is a person!`);
+	},
+	laugh: () => {
+		// logging window not person object, which is WHY arrow functions are not used in objects
+		console.log(this);
+		console.log(`${this.nickName} says HAAHAHHAHA`);
 	}
 };
 
 // Cherilyn Sarkisian AKA Cher is a person!
 person.printBio();
+person.laugh();
