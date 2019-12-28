@@ -16,4 +16,4 @@ const annoyer = {
 	}
 };
 
-annoyer.start();
+// annoyer.start();
