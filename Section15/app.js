@@ -3,12 +3,24 @@
 //  input       hits return     get search results
 //  image       mouseover       display the img caption
 
-const btn = document.querySelector('#clicker');
+const btn = document.querySelector('button');
 
-btn.onclick = function() {
-	console.log('you clicked me');
-};
+btn.addEventListener('click', function() {
+	alert('clicked!!!!!!!!!!!!!!');
+});
 
-btn.ondblclick = function() {
-	console.log('double');
-};
+btn.addEventListener('click', function() {
+	console.log('clicked me bro');
+});
+
+btn.addEventListener('mouseover', function() {
+	btn.innerText = 'STOP TOUCHING ME';
+});
+
+btn.addEventListener('mouseout', function() {
+	btn.innerText = 'click me';
+});
+
+window.addEventListener('scroll', function() {
+	console.log('stop scrolling');
+});
