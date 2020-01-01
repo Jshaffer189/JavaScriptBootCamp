@@ -1,6 +1,8 @@
 const colors = [ 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'indigo', 'violet' ];
 
-const changeColor = function() {
+const changeColor = function(evt) {
+	// logs incoming event object and all data points
+	console.log(evt);
 	const h1 = document.querySelector('h1');
 	h1.style.color = this.style.backgroundColor;
 
@@ -21,3 +23,9 @@ for (let color of colors) {
 	// });
 	box.addEventListener('click', changeColor);
 }
+
+// logs key of keypress
+// e == keyboard event object
+document.body.addEventListener('keypress', function(e) {
+	console.log(e);
+});
