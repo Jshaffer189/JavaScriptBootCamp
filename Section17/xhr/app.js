@@ -9,12 +9,20 @@
 
 const firstReq = new XMLHttpRequest();
 firstReq.addEventListener('load', function() {
-	console.log('It Worked!');
+	console.log('First request worked!');
 	const data = JSON.parse(this.responseText);
-	console.log(data);
-	for (let planet of data.results) {
-		console.log(planet.name);
-	}
+	const filmURL = data.results[0].films[0];
+	const filmReq = new XMLHttpRequest();
+	filmReq.addEventListener('load', function() {
+		console.log('2nd Request worked');
+		const filmData = JSON.parse(this.responseText);
+		console.log(filmData);
+	});
+	filmReq.addEventListener('error', (e) => {
+		console.log('erorrrrr!!', e);
+	});
+	filmReq.open('GET', filmURL);
+	filmReq.send();
 });
 firstReq.addEventListener('error', () => {
 	console.log('ERRRROR!!!');
