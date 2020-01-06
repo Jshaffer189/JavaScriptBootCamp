@@ -1,14 +1,31 @@
-fetch('https://swapi.co/api/planets/')
-	.then((response) => {
-		if (!response.ok) {
-			throw new Error(`Status code Error: ${response.status}`);
-		}
-		return response.json();
-	})
-	.then((data) => {
-		console.log(data);
-		console.log(data.results[0].films[0]);
-	})
+const checkStatusAndParse = (response) => {
+	if (!response.ok) {
+		throw new Error(`Status code Error: ${response.status}`);
+	}
+	return response.json();
+};
+
+const printPlanets = (data) => {
+	console.log('Loaded 10 more planets...');
+	for (let planet of data.results) {
+		console.log(planet.name);
+	}
+	return Promise.resolve(data.next);
+};
+
+const fetchNextPlanets = (url = 'https://swapi.co/api/planets/') => {
+	return fetch(url);
+};
+
+fetchNextPlanets()
+	.then(checkStatusAndParse)
+	.then(printPlanets)
+	.then(fetchNextPlanets)
+	.then(checkStatusAndParse)
+	.then(printPlanets)
+	.then(fetchNextPlanets)
+	.then(checkStatusAndParse)
+	.then(printPlanets)
 	.catch((err) => {
 		console.log('something went wrong with fetch');
 		console.log(err);
