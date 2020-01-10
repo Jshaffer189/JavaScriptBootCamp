@@ -10,6 +10,12 @@ class Pet {
 
 // inherit from Pet class
 class Cat extends Pet {
+	constructor(name, age, livesLeft = 9) {
+		// super references the class that we are extending
+		super(name, age);
+
+		this.livesLeft = livesLeft;
+	}
 	meow() {
 		return 'MEOWWWW';
 	}
