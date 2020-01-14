@@ -3,7 +3,7 @@ class Timer {
 		this.durationInput = durationInput;
 		this.startButton = startButton;
 		this.pauseButton = pauseButton;
-		// optional parameter(callbacks) check
+		// optional parameter(callbacks) check that adds any callbacks into the class
 		if (callbacks) {
 			this.onStart = callbacks.onStart;
 			this.onTick = callbacks.onTick;
