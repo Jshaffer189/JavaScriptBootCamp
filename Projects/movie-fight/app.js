@@ -1,6 +1,20 @@
+const root = document.querySelector('.autocomplete');
+root.innerHTML = `
+	<label><b>Search For a Movie</b></label>
+	<input class="input" />
+	<div class="dropdown is-active">
+		<div class="dropdown-menu">
+			<div class="dropdown-content results"></div>
+		</div>
+	</div>
+`;
+
 // DOM Element Selectors
 const input = document.querySelector('input');
+const dropdown = document.querySelector('.dropdown');
+const resultsWrapper = document.querySelector('.results');
 
+// Axios API
 const fetchData = async (searchTerm) => {
 	const response = await axios.get('http://www.omdbapi.com/', {
 		params: {
@@ -8,6 +22,11 @@ const fetchData = async (searchTerm) => {
 			s: searchTerm
 		}
 	});
+
+	if (response.data.Error) {
+		return [];
+	}
+
 	return response.data.Search;
 };
 
@@ -19,7 +38,7 @@ const onInput = async (event) => {
 
 		// image error
 		div.innerHTML = `
-			<div src="${movie.Poster}" />
+			<img src="${movie.Poster}" />
 			<h1>${movie.Title}</h1>
 		`;
 
@@ -28,4 +47,4 @@ const onInput = async (event) => {
 };
 
 // Event Listeners
-input.addEventListener('input', debounce(onInput, 500));
+input.addEventListener('input', debounce(onInput, 1000));
