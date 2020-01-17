@@ -8,25 +8,12 @@ const fetchData = async (searchTerm) => {
 			s: searchTerm
 		}
 	});
-	console.log(response.data);
+	return response.data.Search;
 };
 
-// debounce helper
-const debounce = (func, delay = 1000) => {
-	let timeoutId;
-	return (...args) => {
-		// debouncing the text input
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-		}
-		timeoutId = setTimeout(() => {
-			func.apply(null, args);
-		}, delay);
-	};
-};
-
-const onInput = (event) => {
-	fetchData(event.target.value);
+const onInput = async (event) => {
+	const movies = await fetchData(event.target.value);
+	console.log(movies);
 };
 
 // Event Listeners
