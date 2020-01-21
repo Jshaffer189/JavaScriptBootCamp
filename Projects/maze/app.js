@@ -1,4 +1,9 @@
 const { Engine, Render, Runner, World, Bodies } = Matter;
+// Engine -
+// Render -
+// Runner -
+// World - access to current app/game state
+// Bodies - access to creating shape elements
 
 const engine = Engine.create();
 const { world } = engine;
