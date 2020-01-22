@@ -46,3 +46,6 @@ for (let i = 0; i < 40; i++) {
 		World.add(world, Bodies.circle(Math.random() * width, Math.random() * height, 35));
 	}
 }
+
+// walls will be built by a two multi dimensional arrays
+// vertical walls will allways have one less array than horizontal walls
