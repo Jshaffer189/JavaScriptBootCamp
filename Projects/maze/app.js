@@ -1,8 +1,8 @@
 const { Engine, Render, Runner, World, Bodies } = Matter;
-// Engine -
-// Render -
-// Runner -
-// World - access to current app/game state
+// World - Object that Contains all matter app context
+// Engine - Reads current state of world object and calculates change in position
+// Runner - runs the world and engine togethor 60fps
+// Render - render changes on screen by engine update
 // Bodies - access to creating shape elements
 
 const cells = 3;
@@ -75,11 +75,23 @@ const setepThroughCell = (row, column) => {
 
 	const neighbors = shuffle([
 		// near by cells
-		[ row - 1, column ],
-		[ row, column + 1 ],
-		[ row + 1, column ],
-		[ row, column - 1 ]
+		[ row - 1, column, 'up' ],
+		[ row, column + 1, 'right' ],
+		[ row + 1, column, 'down' ],
+		[ row, column - 1, 'left' ]
 	]);
+
+	for (let neighbor of neighbors) {
+		// destructur within for loop
+		const [ nextRow, NextColumn ] = neighbor;
+		if (nextRow < 0 || nextRow >= cells || NextColumn < 0 || NextColumn >= cells) {
+			continue;
+		}
+
+		if (grid[nextRow][NextColumn]) {
+			continue;
+		}
+	}
 };
 
 setepThroughCell(1, 1);
