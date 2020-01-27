@@ -5,6 +5,7 @@ const { Engine, Render, Runner, World, Bodies } = Matter;
 // World - access to current app/game state
 // Bodies - access to creating shape elements
 
+const cells = 3;
 const width = 600;
 const height = 600;
 
@@ -32,12 +33,53 @@ const walls = [
 
 World.add(world, walls);
 
-// walls will be built by a two multi dimensional arrays
-// vertical walls will allways have one less array than horizontal walls
+const shuffle = (arr) => {
+	let counter = arr.length;
 
-// Grid array
+	while (counter > 0) {
+		const index = Math.floor(Math.random() * counter);
 
-const grid = Array(3)
+		counter--;
+		const temp = arr[counter];
+		arr[counter] = arr[index];
+		arr[index] = temp;
+	}
+	return arr;
+};
+
+const grid = Array(cells)
 	// 3 columns
 	.fill(null)
-	.map(() => Array(3).fill(false));
+	.map(() => Array(cells).fill(false));
+
+const verticals = Array(cells)
+	//
+	.fill(null)
+	.map(() => Array(cells - 1).fill(false));
+
+const horizontals = Array(cells - 1)
+	//
+	.fill(null)
+	.map(() => Array(cells).fill(false));
+
+const startRow = Math.floor(Math.random() * cells);
+const startColumn = Math.floor(Math.random() * cells);
+
+// single step
+const setepThroughCell = (row, column) => {
+	if (grid[row][column]) {
+		return;
+	}
+
+	grid[row][column] = true;
+
+	const neighbors = shuffle([
+		// near by cells
+		[ row - 1, column ],
+		[ row, column + 1 ],
+		[ row + 1, column ],
+		[ row, column - 1 ]
+	]);
+};
+
+setepThroughCell(1, 1);
