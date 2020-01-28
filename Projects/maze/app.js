@@ -9,6 +9,8 @@ const cells = 3;
 const width = 600;
 const height = 600;
 
+const unitLength = width / cells;
+
 const engine = Engine.create();
 const { world } = engine;
 const render = Render.create({
@@ -66,7 +68,7 @@ const startRow = Math.floor(Math.random() * cells);
 const startColumn = Math.floor(Math.random() * cells);
 
 // single step
-const setepThroughCell = (row, column) => {
+const stepThroughCell = (row, column) => {
 	if (grid[row][column]) {
 		return;
 	}
@@ -83,7 +85,7 @@ const setepThroughCell = (row, column) => {
 
 	for (let neighbor of neighbors) {
 		// destructur within for loop
-		const [ nextRow, NextColumn ] = neighbor;
+		const [ nextRow, NextColumn, direction ] = neighbor;
 		if (nextRow < 0 || nextRow >= cells || NextColumn < 0 || NextColumn >= cells) {
 			continue;
 		}
@@ -91,7 +93,41 @@ const setepThroughCell = (row, column) => {
 		if (grid[nextRow][NextColumn]) {
 			continue;
 		}
+
+		if (direction === 'left') {
+			verticals[row][column - 1] = true;
+		} else if (direction === 'right') {
+			verticals[row][column] = true;
+		} else if (direction === 'up') {
+			horizontals[row - 1][column] = true;
+		} else if (direction === 'down') {
+			horizontals[row][column] = true;
+		}
+		stepThroughCell(nextRow, NextColumn);
 	}
 };
 
-setepThroughCell(1, 1);
+stepThroughCell(startRow, startColumn);
+
+horizontals.forEach((row, rowIndex) => {
+	row.forEach((open, columnIndex) => {
+		if (open === true) {
+			return;
+		}
+
+		const wall = Bodies.rectangle(
+			columnIndex * unitLength + unitLength / 2,
+			rowIndex * unitLength + unitLength,
+			unitLength,
+			10,
+			{
+				isStatic: true
+			}
+		);
+		World.add(world, wall);
+	});
+});
+
+verticals.forEach((row, rowIndex) => {
+	row.forEach((columnIndex) => {});
+});
