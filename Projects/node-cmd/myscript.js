@@ -1,3 +1,10 @@
-const message = 'hi there';
+let counter = 0;
 
-module.exports = message;
+module.exports = {
+	incrementCounter() {
+		counter = counter + 1;
+	},
+	getCounter() {
+		return counter;
+	}
+};
