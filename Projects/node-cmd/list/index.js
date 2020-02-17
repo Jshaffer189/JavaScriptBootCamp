@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-fs.readdir('.', (err, fileNames) => {
+fs.readdir(process.cwd(), (err, fileNames) => {
 	// error == error obj
 	// fileNames == null, sucess
 
