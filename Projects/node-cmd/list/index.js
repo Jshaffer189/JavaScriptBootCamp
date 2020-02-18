@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// debugger command
+// node --inspect-brk
+
 const fs = require('fs');
 
 fs.readdir(process.cwd(), (err, fileNames) => {
