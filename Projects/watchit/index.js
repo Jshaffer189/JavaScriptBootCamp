@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-console.log('this was executed!');
+const chokidar = require('chokidar');
+
+chokidar.watch('.').on('all', () => {});
