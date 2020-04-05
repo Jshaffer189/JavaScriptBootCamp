@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
             <form method="POST">
                 <input name="email" placeholder="email" />
                 <input name="password" placeholder="password" />
-                <input name="passwordConfirmation placeholder="password confirmation" />
+                <input name="passwordConfirmation" placeholder="password confirmation" />
                 <button>Sign up</button>
             </form>
         </div>
@@ -18,6 +18,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
+	req.on('data', (data) => {
+		const parsed = data.toString('utf8').split('&');
+		const formData = {};
+		for (let pair of parsed) {
+			// destructure with each pair split and value by index
+			const [ key, value ] = pair.split('=');
+			formData[key] = value;
+		}
+		console.log(formData);
+	});
+
 	res.send('Account created');
 });
 
