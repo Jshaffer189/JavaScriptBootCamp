@@ -15,6 +15,7 @@ class UsersRepository {
 		}
 	}
 
+	// Get all users
 	async getAll() {
 		return JSON.parse(await fs.promises.readFile(this.filename, { encoding: 'utf8' }));
 	}
@@ -29,7 +30,7 @@ class UsersRepository {
 		await this.writeAll(records);
 	}
 
-	// writeAll
+	// write/save all to memory
 	async writeAll(records) {
 		await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
 	}
@@ -46,16 +47,35 @@ class UsersRepository {
 	}
 
 	// delete
+	async delete(id) {
+		const records = await this.getAll();
+		// filter out the deleted id
+		const filteredRecords = records.filter((record) => record.id !== id);
+		await this.writeAll(filteredRecords);
+	}
 
 	// update
+	async update(id, attrs) {
+		const records = await this.getAll();
+		const record = records.find((record) => record.id === id);
+
+		if (!record) {
+			throw new Error(`Record with id ${id} not found`);
+		}
+
+		// if error not thrown, take attrs and copy => on to record object
+		Object.assign(record, attrs);
+
+		await this.writeAll(records);
+	}
+
+	// getOneBy
 }
 
 const test = async () => {
 	const repo = new UsersRepository('users.json');
 
-	const user = await repo.getOne('cc34e833');
-
-	console.log(user);
+	await repo.update('feb03bf9', { password: 'yes' });
 };
 
 test();
