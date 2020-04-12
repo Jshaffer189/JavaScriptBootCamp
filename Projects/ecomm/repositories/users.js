@@ -22,12 +22,18 @@ class UsersRepository {
 
 	// account creation bundle function
 	async create(attrs) {
+		// creating random id and giving it to the user
 		attrs.id = this.randomId();
 
+		// push new user to getAll collection
 		const records = await this.getAll();
 		records.push(attrs);
 
+		// save new user/collection
 		await this.writeAll(records);
+
+		// return newly created user/along with id
+		return attrs;
 	}
 
 	// write/save all to memory
