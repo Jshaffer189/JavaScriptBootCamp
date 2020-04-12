@@ -92,12 +92,8 @@ class UsersRepository {
 	}
 }
 
-const test = async () => {
-	const repo = new UsersRepository('users.json');
+module.exports = new UsersRepository('users.json');
 
-	const user = await repo.getOneBy({ idsafasdfd: 'feb03bf9' });
-
-	console.log(user);
-};
-
-test();
+// export to:
+// const repo = require('./users');
+// repo.funcName()
