@@ -1,5 +1,8 @@
 const fs = require('fs');
 const crypto = require('crypto');
+const util = require('util');
+
+const scrypt = util.promisify(crypto.scrypt);
 
 class UsersRepository {
 	constructor(filename) {
@@ -8,6 +11,7 @@ class UsersRepository {
 		}
 
 		this.filename = filename;
+
 		try {
 			fs.accessSync(this.filename);
 		} catch (err) {
@@ -20,20 +24,39 @@ class UsersRepository {
 		return JSON.parse(await fs.promises.readFile(this.filename, { encoding: 'utf8' }));
 	}
 
-	// account creation bundle function
+	// account creation/hash/salt bundle function
 	async create(attrs) {
 		// creating random id and giving it to the user
 		attrs.id = this.randomId();
 
+		// salted string
+		const salt = crypto.randomBytes(8).toString('hex');
+		// hash
+		const buf = await scrypt(attrs.password, salt, 64);
+
 		// push new user to getAll collection
 		const records = await this.getAll();
-		records.push(attrs);
+		const record = {
+			// attrs are the non-password incoming parameters
+			...attrs,
+			password: `${buf.toString('hex')}.${salt}`
+		};
+		records.push(record);
 
 		// save new user/collection
 		await this.writeAll(records);
 
-		// return newly created user/along with id
-		return attrs;
+		// return newly created user/along with id, hashed password
+		return record;
+	}
+
+	// saved -> password saved in databse, plus 'hashed.salt
+	// supplied -> user input sign in password
+	async comparePasswords(saved, supplied) {
+		const [ hashed, salt ] = saved.split('.');
+		const hashedSuppliedBuf = await scrypt(supplied, salt, 64);
+
+		return hashed === hashedSuppliedBuf.toString('hex');
 	}
 
 	// write/save all to memory
