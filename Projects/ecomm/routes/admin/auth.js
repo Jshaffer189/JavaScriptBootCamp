@@ -1,4 +1,6 @@
 const express = require('express');
+// only requrie in the check function from express-validator lib
+const { check } = require('express-validator');
 const usersRepo = require('../../repositories/users');
 const signupTemplate = require('../../views/admin/auth/signup');
 const signinTemplate = require('../../views/admin/auth/signin');
@@ -10,7 +12,7 @@ router.get('/signup', (req, res) => {
 	res.send(signupTemplate({ req }));
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', [ check('email'), check('password'), check('passwordConfirmation') ], async (req, res) => {
 	const { email, password, passwordConfirmation } = req.body;
 
 	const existingUser = await usersRepo.getOneBy({ email });
@@ -31,12 +33,6 @@ router.post('/signup', async (req, res) => {
 	req.session.userId = user.id;
 
 	res.send('Account created');
-});
-
-router.get('/signout', (req, res) => {
-	// removes stored cookie on signout
-	req.session = null;
-	res.send('You are logged out');
 });
 
 router.get('/signin', (req, res) => {
@@ -62,6 +58,12 @@ router.post('/signin', async (req, res) => {
 	req.session.userId = user.id;
 
 	res.send('You are signed in!');
+});
+
+router.get('/signout', (req, res) => {
+	// removes stored cookie on signout
+	req.session = null;
+	res.send('You are logged out');
 });
 
 module.exports = router;
