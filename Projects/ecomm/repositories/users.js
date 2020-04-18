@@ -100,14 +100,12 @@ class UsersRepository {
 
 	// getOneBy
 	// loop through users,
-	// loop/filter through users key.value === key.value
 	async getOneBy(filters) {
 		const records = await this.getAll();
 
 		for (let record of records) {
 			let found = true;
 
-			// loop "in" object to access object keys
 			for (let key in filters) {
 				if (record[key] !== filters[key]) {
 					found = false;
