@@ -36,7 +36,7 @@ router.post('/signup', [ requireEmail, requirePassowrd, requirePassowrdConfirmat
 
 // sign in template
 router.get('/signin', (req, res) => {
-	res.send(signinTemplate());
+	res.send(signinTemplate({}));
 });
 
 router.post(
@@ -48,7 +48,10 @@ router.post(
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
-		console.log(errors);
+
+		if (!errors.isEmpty()) {
+			return res.send(signinTemplate({ errors }));
+		}
 
 		const { email, password } = req.body;
 
