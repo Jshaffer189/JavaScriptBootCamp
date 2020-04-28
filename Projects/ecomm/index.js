@@ -8,6 +8,7 @@ const app = express();
 
 // Node Middleware
 app.use(express.static('public'));
+// encode default forms
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
 	cookieSession({
