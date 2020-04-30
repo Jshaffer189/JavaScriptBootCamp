@@ -1,5 +1,8 @@
+// external middleware
 const express = require('express');
-const { validationResult } = require('express-validator');
+
+// internal middleware
+const { handleErrors } = require('./middlewares');
 const usersRepo = require('../../repositories/users');
 const signupTemplate = require('../../views/admin/auth/signup');
 const signinTemplate = require('../../views/admin/auth/signin');
@@ -18,21 +21,19 @@ router.get('/signup', (req, res) => {
 	res.send(signupTemplate({ req }));
 });
 
-router.post('/signup', [ requireEmail, requirePassowrd, requirePassowrdConfirmation ], async (req, res) => {
-	const errors = validationResult(req);
+router.post(
+	'/signup',
+	[ requireEmail, requirePassowrd, requirePassowrdConfirmation ],
+	handleErrors(signupTemplate),
+	async (req, res) => {
+		const { email, password } = req.body;
+		const user = await usersRepo.create({ email, password });
 
-	if (!errors.isEmpty()) {
-		return res.send(signupTemplate({ req, errors }));
+		req.session.userId = user.id;
+
+		res.send('Account created');
 	}
-
-	const { email, password, passwordConfirmation } = req.body;
-	const user = await usersRepo.create({ email, password });
-
-	// run a check if cookie session === users browser
-	req.session.userId = user.id;
-
-	res.send('Account created');
-});
+);
 
 // sign in template
 router.get('/signin', (req, res) => {
@@ -41,25 +42,12 @@ router.get('/signin', (req, res) => {
 
 router.post(
 	'/signin',
-	[
-		//
-		requireEmailExist,
-		requireValidPasswordForUser
-	],
+	[ requireEmailExist, requireValidPasswordForUser ],
+	handleErrors(signinTemplate),
 	async (req, res) => {
-		const errors = validationResult(req);
-
-		if (!errors.isEmpty()) {
-			return res.send(signinTemplate({ errors }));
-		}
-
-		const { email, password } = req.body;
+		const { email } = req.body;
 
 		const user = await usersRepo.getOneBy({ email });
-
-		if (!user) {
-			return res.send('Email not Found');
-		}
 
 		req.session.userId = user.id;
 
