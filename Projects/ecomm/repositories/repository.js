@@ -1,8 +1,6 @@
 const fs = require('fs');
 const crypto = require('crypto');
 
-// TODO: create func
-
 module.exports = class Repository {
 	constructor(filename) {
 		if (!filename) {
@@ -18,11 +16,11 @@ module.exports = class Repository {
 		}
 	}
 
-	async create(attts) {
+	async create(attrs) {
 		attrs.id = this.randomId();
 
 		const records = await this.getAll();
-		records.push(attr);
+		records.push(attrs);
 
 		await this.writeAll(records);
 
@@ -69,7 +67,6 @@ module.exports = class Repository {
 
 		// if error not thrown, take attrs and copy => on to record object
 		Object.assign(record, attrs);
-
 		await this.writeAll(records);
 	}
 

@@ -18,26 +18,21 @@ router.get('/signup', (req, res) => {
 	res.send(signupTemplate({ req }));
 });
 
-router.post(
-	//
-	'/signup',
-	[ requireEmail, requirePassowrd, requirePassowrdConfirmation ],
-	async (req, res) => {
-		const errors = validationResult(req);
+router.post('/signup', [ requireEmail, requirePassowrd, requirePassowrdConfirmation ], async (req, res) => {
+	const errors = validationResult(req);
 
-		if (!errors.isEmpty()) {
-			return res.send(signupTemplate({ req, errors }));
-		}
-
-		const { email, password, passwordConfirmation } = req.body;
-		const user = await usersRepo.create({ email, password });
-
-		// run a check if cookie session === users browser
-		req.session.userId = user.id;
-
-		res.send('Account created');
+	if (!errors.isEmpty()) {
+		return res.send(signupTemplate({ req, errors }));
 	}
-);
+
+	const { email, password, passwordConfirmation } = req.body;
+	const user = await usersRepo.create({ email, password });
+
+	// run a check if cookie session === users browser
+	req.session.userId = user.id;
+
+	res.send('Account created');
+});
 
 // sign in template
 router.get('/signin', (req, res) => {

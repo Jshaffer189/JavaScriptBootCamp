@@ -15,20 +15,14 @@ class UsersRepository extends Repository {
 		return hashed === hashedSuppliedBuf.toString('hex');
 	}
 
-	// account creation/hash/salt bundle function
 	async create(attrs) {
-		// creating random id and giving it to the user
 		attrs.id = this.randomId();
 
-		// salted string
 		const salt = crypto.randomBytes(8).toString('hex');
-		// hash
 		const buf = await scrypt(attrs.password, salt, 64);
 
-		// push new user to getAll collection
 		const records = await this.getAll();
 		const record = {
-			// attrs are the non-password incoming parameters
 			...attrs,
 			password: `${buf.toString('hex')}.${salt}`
 		};
