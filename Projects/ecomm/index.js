@@ -14,7 +14,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
 	cookieSession({
-		keys: [ '55d6agy8a6v4j4o5g6sc24s8' ]
+		keys: [ 'lkasld235j' ]
 	})
 );
 app.use(authRouter);

@@ -1,10 +1,31 @@
 const express = require('express');
+const cartsRepo = require('../repositories/carts');
 
 const router = express.Router();
 
 // recive a post req to add an item to a cart+
-router.post('/cart/products', (req, res) => {
-	console.log(req.body.productId);
+router.post('/cart/products', async (req, res) => {
+	// does cart exist
+	let cart;
+	if (!req.session.cartId) {
+		cart = await cartsRepo.create({ items: [] });
+		req.session.cartId = cart.Id;
+	} else {
+		cart = await cartsRepo.getOne(req.session.cartId);
+	}
+
+	const existingItem = cart.items.find((item) => item.id === req.body.productId);
+
+	if (existingItem) {
+		existingItem.quanity++;
+	} else {
+		// add new product id to items array
+		cart.items.push({ id: req.body.productId, quanity: 1 });
+	}
+
+	await cartsRepo.update(cart.id, {
+		items: cart.items
+	});
 
 	res.send('product added');
 });
