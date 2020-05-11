@@ -1,5 +1,7 @@
 const express = require('express');
 const cartsRepo = require('../repositories/carts');
+const productsRepo = require('../repositories/products');
+const cartShowTempalte = require('../views/carts/show');
 
 const router = express.Router();
 
@@ -9,12 +11,10 @@ router.post('/cart/products', async (req, res) => {
 	let cart;
 	if (!req.session.cartId) {
 		cart = await cartsRepo.create({ items: [] });
-		req.session.cartId = cart.Id;
+		req.session.cartId = cart.id;
 	} else {
 		cart = await cartsRepo.getOne(req.session.cartId);
 	}
-
-	console.log(cart);
 
 	const existingItem = cart.items.find((item) => item.id === req.body.productId);
 
@@ -29,11 +29,34 @@ router.post('/cart/products', async (req, res) => {
 		items: cart.items
 	});
 
-	res.send('product added');
+	res.redirect('/cart');
 });
 
-// recive a get req to show all items in cart
+router.get('/cart', async (req, res) => {
+	if (!req.session.cartId) {
+		return res.redirect('/');
+	}
 
-// recive a post request to delte an item from a cart
+	const cart = await cartsRepo.getOne(req.session.cartId);
+
+	for (let item of cart.items) {
+		const product = await productsRepo.getOne(item.id);
+
+		item.product = product;
+	}
+
+	res.send(cartShowTempalte({ items: cart.items }));
+});
+
+router.post('/cart/products/delete', async (req, res) => {
+	const { itemId } = req.body;
+	const cart = await cartsRepo.getOne(req.session.cartId);
+
+	const items = cart.items.filter((item) => item.id !== itemId);
+
+	await cartsRepo.update(req.session.cartId, { items });
+
+	res.redirect('/cart');
+});
 
 module.exports = router;
