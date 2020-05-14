@@ -1,39 +1,37 @@
+const assert = require('assert').strict;
 const { forEach, map } = require('./index');
 
-const test = (desc, fn) => {
-	console.log('---', desc);
-	try {
-		fn();
-	} catch (err) {
-		console.log(err.message);
-	}
-};
+// test function
+// const test = (desc, fn) => {
+// 	console.log('---', desc);
+// 	try {
+// 		fn();
+// 	} catch (err) {
+// 		console.log(err.message);
+// 	}
+// };
 
-test('the foreach function', () => {
+it('the foreach function', () => {
 	let sum = 0;
 	forEach([ 1, 2, 3 ], (value) => {
 		sum += value;
 	});
 
-	if (sum !== 6) {
-		throw new Error('Expected summing array to equal 6');
-	}
+	// arg 1 value produced
+	// arg 2 value expected
+	// arg 3 optional error message
+	assert.strictEqual(sum, 6, 'Expected forEach to sum the array');
 });
 
-test('the map function', () => {
+it('the map function', () => {
 	const result = map([ 1, 2, 3 ], (value) => {
 		return value * 2;
 	});
 
-	if (result[0] !== 2) {
-		throw new Error(`Expected to find 2, but found ${result[0]}`);
-	}
+	// assert.strictEqual(result[0], 2, `Expected to find 2, but found ${result[0]}`);
+	// assert.strictEqual(result[1], 4, `Expected to find 4, but found ${result[0]}`);
+	// assert.strictEqual(result[2], 6, `Expected to find 6, but found ${result[0]}`);
 
-	if (result[1] !== 4) {
-		throw new Error(`Expected to find 4, but found ${result[0]}`);
-	}
-
-	if (result[2] !== 6) {
-		throw new Error(`Expected to find 6, but found ${result[0]}`);
-	}
+	// compares both and includes error between comparison in terminal
+	assert.deepStrictEqual(result, [ 2, 4, 6 ]);
 });
