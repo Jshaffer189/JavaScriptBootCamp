@@ -5,7 +5,6 @@ class Runner {
 		this.files = [];
 	}
 
-	// absolute path == target path
 	async collectFiles(targetPath) {
 		const files = await fs.promises.readdir(targetPath);
 
