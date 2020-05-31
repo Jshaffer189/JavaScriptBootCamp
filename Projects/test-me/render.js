@@ -1,16 +1,21 @@
 const path = require('path');
 const jsdom = require('jsdom');
-const { JSODM } = jsdom;
+const { JSDOM } = jsdom;
 
 const render = async (filename) => {
 	const filePath = path.join(process.cwd(), filename);
 
-	const dom = await JSODM.fromFile(filePath, {
-		runSCripts: 'dangerously',
+	const dom = await JSDOM.fromFile(filePath, {
+		runScripts: 'dangerously',
 		resources: 'usable'
 	});
 
-	return dom;
+	// return new promise for resolved dom build
+	return new Promise((resolve, reject) => {
+		dom.window.document.addEventListener('DOMContentLoaded', () => {
+			resolve(dom);
+		});
+	});
 };
 
 module.exports = render;

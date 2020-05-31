@@ -4,7 +4,8 @@ const Runner = require('./runner');
 const runner = new Runner();
 
 const run = async () => {
-	const results = await runner.collectFiles(process.cwd());
+	await runner.collectFiles(process.cwd());
+	// run all tests in cwd
 	runner.runTests();
 };
 

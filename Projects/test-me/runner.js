@@ -21,16 +21,16 @@ class Runner {
 				beforeEaches.push(fn);
 			};
 
-			global.it = (desc, fn) => {
+			global.it = async (desc, fn) => {
 				beforeEaches.forEach((func) => func());
 				try {
-					fn();
+					await fn();
 					console.log(chalk.green(`\tOK - ${desc}`));
 				} catch (err) {
 					// regex new line tab tab
 					const message = err.message.replace(/\n/g, '\n\t\t');
 					console.log(chalk.red(`\tX - ${desc}`));
-					console.log(chalk.red('\t', message.message));
+					console.log(chalk.red('\t', message));
 				}
 			};
 
